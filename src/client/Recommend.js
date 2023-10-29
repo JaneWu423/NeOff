@@ -107,15 +107,24 @@ export const Recommend = () => {
         });
     }
     const addUrl = async function() {
-        const urlsRef = collection(db, "urls");
-        const docRef = await addDoc(collection(db, "urls"), {
-            dislike: 0,
-            iconUrl: `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=16`,
-            like: 0,
-            name: "Test",
-            report : 0,
-            url: url
-        });
+        const q = query(collection(db, "urls"), where("url", "==", url), limit(1));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+            const docRef = await addDoc(collection(db, "urls"), {
+                dislike: 0,
+                iconUrl: `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=16`,
+                like: 0,
+                name: "Test",
+                report : 0,
+                url: url,
+                totalViewed: 0,
+            });
+        } else {
+            let ref = querySnapshot.docs[0].ref; 
+            let ret = await updateDoc(ref, {
+               like: increment(1)
+            });
+        }
     }
     
     const like = async function() {
@@ -156,36 +165,17 @@ export const Recommend = () => {
             return "Not exist"
         }
     }
-    const testlike = async function( ){
-        console.log(url)
-
-        // const urlRef = db.doc('VP3ErOtmSqxD6pEKJQkC');
-        // console.log(urlRef)
-
-        // const doc = await urlRef.get();
-        // console.log(doc)
-
-        const urlsRef = collection(db, "urls");
-        console.log(urlsRef)
-
-
-        // await setDoc(doc(urlsRef, VP3ErOtmSqxD6pEKJQkC),{
-        //     name: "San Francisco", state: "CA", country: "USA",
-        //     capital: false, population: 860000,
-        //     regions: ["west_coast", "norcal"] });
-
-
-        const docRef = await addDoc(collection(db, "urls"), {
-            dislike: 0,
-            iconUrl: `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=16`,
-            like: 0,
-            name: "Test",
-            report : 0,
-            url: url
-        });
-        console.log(0)
-    
-
+    const report = async function() {
+        const q = query(collection(db, "urls"), where("url", "==", url), limit(1));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+            let ref = querySnapshot.docs[0].ref; 
+            let ret = await updateDoc(ref, {
+               totalViewed: increment(1)
+            });
+        } else {
+            return "Not exist"
+        }
     }
 
     return (
