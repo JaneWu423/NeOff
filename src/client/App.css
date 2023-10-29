@@ -1,3 +1,7 @@
+:root {
+  --color-primary: #16c9ff;
+}
+
 .container{
   display: flex;
   flex-direction: column;
@@ -12,10 +16,10 @@
   border-radius: 2rem;
   box-shadow: 0 0 .2rem #fff,
               0 0 .2rem #fff,
-              0 0 2rem #03e9f4,
-              0 0 0.8rem #03e9f4,
-              0 0 2.8rem #03e9f4,
-              inset 0 0 1.3rem #03e9f4;
+              0 0 2rem var(),
+              0 0 0.8rem var(--color-primary),
+              0 0 2.8rem var(--color-primary),
+              inset 0 0 1.3rem var(--color-primary);
 }
 
 .neon-text-flicker {
@@ -30,10 +34,10 @@
 
 @keyframes flicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% {
-      text-shadow: 0 0 5px #03e9f4,
-              0 0 25px #03e9f4,
-              0 0 50px #03e9f4,
-              0 0 200px #03e9f4;
+      text-shadow: 0 0 5px var(--color-primary),
+              0 0 25px var(--color-primary),
+              0 0 50px var(--color-primary),
+              0 0 200px var(--color-primary);
   }
   20%, 24%, 55% {
       text-shadow: none;
@@ -45,21 +49,21 @@
       text-shadow: 0 0 4px #fff,
                   0 0 10px #fff,
                   0 0 23px #fff,
-                  0 0 44px #03e9f4,
-                  0 0 67px #03e9f4,
-                  0 0 88px #03e9f4,
-                  0 0 120px #03e9f4,
-                  0 0 170px #03e9f4;
+                  0 0 44px var(--color-primary),
+                  0 0 67px var(--color-primary),
+                  0 0 88px var(--color-primary),
+                  0 0 120px var(--color-primary),
+                  0 0 170px var(--color-primary);
   }
   0%{
       text-shadow: 0 0 2px #fff,
               0 0 5px #fff,
               0 0 10px #fff,
-              0 0 20px #03e9f4,
-              0 0 30px #03e9f4,
-              0 0 40px #03e9f4,
-              0 0 55px #03e9f4,
-              0 0 75px #03e9f4;
+              0 0 20px var(--color-primary),
+              0 0 30px var(--color-primary),
+              0 0 40px var(--color-primary),
+              0 0 55px var(--color-primary),
+              0 0 75px var(--color-primary);
   }
 }
 
@@ -67,11 +71,14 @@ h3 {
   color: white;
 }
 
+div {
+  color:white;
+}
+
 
 
 .neon-btn {
   width: fit-content;
-  padding: 25px 30px;
   color: #fff;
   border: 0.1rem solid #fff;
   border-radius: 2rem;
@@ -83,12 +90,40 @@ h3 {
 }
 
 .neon-btn:hover{
-  background-color: #03e9f4;
+  background-color: var(--color-primary);
   color: white;
   box-shadow: 0 0 4px #fff,
               0 0 6px #fff,
-              0 0 10px #03e9f4,
-              0 0 25px #03e9f4,
-              0 0 50px #03e9f4,
-              0 0 100px #03e9f4;
+              0 0 10px var(--color-primary),
+              0 0 25px var(--color-primary),
+              0 0 50px var(--color-primary),
+              0 0 100px var(--color-primary);
+}
+
+
+.neon-btn-sm {
+  height: fit-content;
+  padding: 0.3em;
+  font-size: 12px;
+  color: #fff;
+  border: 0.1rem solid #fff;
+  border-radius: 2rem;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.neon-btn-sm:hover{
+  background-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 0 2px #fff,
+              0 0 4px #fff,
+              0 0 10px var(--color-primary),
+              0 0 15px var(--color-primary),
+              0 0 30px var(--color-primary),
+}
+
+.heart {
+  stroke: var(--color-primary);
+  filter: drop-shadow(0 0 4px #ffffff) drop-shadow(0 0 10px var(--color-primary))
+    drop-shadow(0 0 20px var(--color-primary));
 }
