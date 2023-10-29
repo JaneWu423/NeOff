@@ -132,24 +132,35 @@ export const Recommend = () => {
     }
 
     const selectRandom5 = async function() {
+        const randomArray = [-1,-1,-1,-1,-1]
+
+        if(collectionSize < randomArray.length){
+            return;
+        }
+        //Get the total size of collection
         const coll = collection(db, "urls");
         const snapshot = await getCountFromServer(coll);
         const collectionSize = snapshot.data().count;
 
-        const q = query(urlsRef, limit(collectionSize));
+        let randomUrls = []
+        let ret = []
+
+        const q = query(coll, limit(collectionSize));
         const querySnapshot = await getDocs(q);
-
-        total = []
-
         querySnapshot.forEach((doc, index) => {
             ret.push({url: doc.data().url, iconUrl: doc.data().iconUrl})
         });
 
-        randomIndexes = [0,0,0,0,0]
-        // for i in range(randomIndex.len()){
+        for (let i = 0; i < randomArray.length; ++i) {
+            let randomIndex = Math.floor(Math.random() * collectionSize);
+            while (randomArray.includes(randomIndex)){
+                randomIndex = Math.floor(Math.random() * collectionSize);
+            }
+            randomArray[i] = randomIndex
+            randomUrls.push(ret[randomIndex])
+        }
 
-        // }
-        
+        console.log(randomUrls)
     }
 
     const selectTop5 = async function(){
