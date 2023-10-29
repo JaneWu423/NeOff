@@ -11,7 +11,7 @@ const firebaseConfig = {
     appId: "1:700079134322:web:81c95ff7175e428c2354eb"
   };
 
-import { getFirestore, collection, query, where, doc, getDoc, setDoc, addDoc, updateDoc, increment, limit , getDocs} from "firebase/firestore";
+import { getFirestore, collection, query, where, doc, getDoc, setDoc, addDoc, updateDoc, increment, limit , getDocs, orderBy, getCountFromServer, get} from "firebase/firestore";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -96,7 +96,8 @@ export const Recommend = () => {
     let [rec, setRec] = useState(defaultData);
 
     const url = window.location.href;
-  
+    
+
     
     const neonEffect = function () {
         text = !text ? "Neon Effect" : ""
@@ -109,7 +110,9 @@ export const Recommend = () => {
     const addUrl = async function() {
         const q = query(collection(db, "urls"), where("url", "==", url), limit(1));
         const querySnapshot = await getDocs(q);
+        console.log(querySnapshot)
         if (querySnapshot.empty) {
+            console.log(1)
             const docRef = await addDoc(collection(db, "urls"), {
                 dislike: 0,
                 iconUrl: `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=16`,
@@ -120,11 +123,49 @@ export const Recommend = () => {
                 totalViewed: 0,
             });
         } else {
+            console.log(2)
             let ref = querySnapshot.docs[0].ref; 
             let ret = await updateDoc(ref, {
                like: increment(1)
             });
         }
+    }
+
+    const selectRandom5 = async function() {
+        const coll = collection(db, "urls");
+        const snapshot = await getCountFromServer(coll);
+        const collectionSize = snapshot.data().count;
+
+        const q = query(urlsRef, limit(collectionSize));
+        const querySnapshot = await getDocs(q);
+
+        total = []
+
+        querySnapshot.forEach((doc, index) => {
+            ret.push({url: doc.data().url, iconUrl: doc.data().iconUrl})
+        });
+
+        randomIndexes = [0,0,0,0,0]
+        // for i in range(randomIndex.len()){
+
+        // }
+        
+    }
+
+    const selectTop5 = async function(){
+        // console.log(0)
+        const urlsRef = collection(db, "urls");
+        // console.log(0.5)
+        const q = query(urlsRef, orderBy("like"), limit(5));
+        // console.log(1)
+        const ret = [];
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            ret.push({url: doc.data().url, iconUrl: doc.data().iconUrl})
+        });
+
+        console.log(ret)
+        return ret
     }
     
     const like = async function() {
@@ -165,7 +206,8 @@ export const Recommend = () => {
             return "Not exist"
         }
     }
-    const report = async function() {
+
+    const addTotalView = async function() {
         const q = query(collection(db, "urls"), where("url", "==", url), limit(1));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
@@ -188,7 +230,7 @@ export const Recommend = () => {
                     {rec === defaultData ? null : <NeonList list={rec} />}
                 </div>
 
-                <div className="neon-btn" onClick={like}>Test</div>
+                <div className="neon-btn" onClick={selectRandom5}>Test</div>
             </div>
         </div>
     );
