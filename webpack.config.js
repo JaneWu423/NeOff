@@ -7,14 +7,16 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 export default {
-    entry: "./main.js",
+    entry: {
+        main: './src/client/index.js',
+        sendurl: './public/sendurl.js'
+      },
     mode: "production",
     devtool: 'cheap-module-source-map',
     output: {
       filename: "js/[name].js",
       path: path.resolve(__dirname, "dist")
     },
-    entry: './src/client/index.js', // Your entry point for the application
     module: {
         rules: [
             {
@@ -44,16 +46,8 @@ export default {
             ],
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "index.html"),
+            template: path.resolve(__dirname, "src/client/index.html"),
             filename: "index.html",
-            // inject: "body",
         })
     ],
-    // resolve: {
-    //     extensions: ['.js', '.jsx'], // Allows you to import files without specifying their extensions
-    // },
-    // devServer: {
-    //     contentBase: path.join(__dirname, 'dist'),
-    //     port: 3000, // Set the port you want to use
-    // },
 };

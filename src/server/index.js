@@ -91,6 +91,25 @@ app.get("/recommend/random", (req, res) => {
 });
 
 
+app.post("/recommend/like", (req, res) => {
+  const url = req.body.url;
+  console.log("Like "+url);
+  res.sendStatus(200);
+});
+
+app.post("/recommend/dislike", (req, res) => {
+  const url = req.body.url;
+  console.log("Dislike "+url);
+  res.sendStatus(200);
+});
+
+app.post("/recommend/report", (req, res) => {
+  const url = req.body.url;
+  console.log("report "+url);
+  res.sendStatus(200);
+});
+
+
 // Add CORS middleware
 app.use(cors(corsOptions));
 
