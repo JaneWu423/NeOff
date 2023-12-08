@@ -1,6 +1,6 @@
 :root {
-  --color-primary: #0babdc;
-  --color-text: #e85ff5;
+  --color-primary: #00ccff;
+  --color-text: #ff1abe;
 }
 
 .container{
@@ -22,7 +22,8 @@
 
 .neon-text{
   color: #fff;
-  filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 10px var(--color-text));
+  /* filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 10px var(--color-text)); */
+  animation: flicker 2s infinite alternate;
 }
 
 .neon-text-flicker {
@@ -132,8 +133,11 @@ div {
 .divider {
   width: 100%;
   border: none;
+  color: var(--color-primary);
   border-top: 1px solid #fff; /* Adjust the style and color as needed */
   margin: 10px 0; /* You can adjust the top and bottom margin */
+  filter: drop-shadow(0 0 4px #ffffff) drop-shadow(0 0 10px var(--color-text))
+  drop-shadow(0 0 20px var(--color-text));
 }
 
 a {
